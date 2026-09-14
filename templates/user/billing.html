@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Billing - AI Assistant Pro</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f5f7fa; padding: 20px; color: #333; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .back { color: #667eea; text-decoration: none; font-weight: bold; margin-bottom: 20px; display: inline-block; }
+        .header { text-align: center; margin-bottom: 40px; }
+        .header h1 { font-size: 2.5rem; color: #2d3748; margin-bottom: 10px; }
+        .header p { color: #718096; font-size: 1.1rem; }
+        
+        .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        
+        .plan-card {
+            background: white; border-radius: 20px; padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 2px solid transparent;
+            transition: all 0.3s ease; position: relative;
+        }
+        .plan-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        
+        .plan-card.pro { border-color: #667eea; }
+        .badge-pro {
+            position: absolute; top: -15px; right: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2); color: white;
+            padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold;
+        }
+        
+        .plan-name { font-size: 1.5rem; font-weight: 700; color: #2d3748; margin-bottom: 10px; }
+        .plan-price { font-size: 3rem; font-weight: 800; color: #667eea; margin-bottom: 20px; }
+        .plan-price span { font-size: 1rem; color: #718096; font-weight: 500; }
+        
+        .features { list-style: none; margin-bottom: 30px; }
+        .features li { padding: 10px 0; color: #4a5568; display: flex; align-items: center; gap: 10px; }
+        .features li::before { content: '✅'; }
+        .features li.disabled { color: #cbd5e0; text-decoration: line-through; }
+        .features li.disabled::before { content: '❌'; }
+        
+        .btn {
+            display: block; width: 100%; padding: 15px; text-align: center;
+            border-radius: 10px; font-weight: bold; font-size: 1.1rem;
+            text-decoration: none; transition: all 0.3s ease; border: none; cursor: pointer;
+        }
+        .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .btn-primary:hover { transform: scale(1.02); }
+        .btn-secondary { background: #edf2f7; color: #4a5568; cursor: default; }
+        
+        .current-badge { text-align: center; color: #10b981; font-weight: bold; margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/dashboard/" class="back">← Back to Dashboard</a>
+        
+        <div class="header">
+            <h1>Choose Your Plan</h1>
+            <p>Unlock the full power of AI automation for your business</p>
+        </div>
+        
+        <div class="pricing-grid">
+            <!-- FREE PLAN -->
+            <div class="plan-card">
+                <div class="plan-name">Free Starter</div>
+                <div class="plan-price">$0 <span>/ forever</span></div>
+                <ul class="features">
+                    <li>Connect 1 Social Account</li>
+                    <li>5 Scheduled Posts per month</li>
+                    <li>Basic AI Auto-Replies</li>
+                    <li class="disabled">Trending Topic Automation</li>
+                    <li class="disabled">Priority Support</li>
+                </ul>
+                {% if current_user.subscription_tier == 'free' %}
+                    <button class="btn btn-secondary" disabled>Current Plan</button>
+                    <div class="current-badge">✓ You are here</div>
+                {% else %}
+                    <a href="/dashboard/" class="btn btn-secondary">Downgrade</a>
+                {% endif %}
+            </div>
+            
+            <!-- PRO PLAN -->
+            <div class="plan-card pro">
+                <div class="badge-pro">MOST POPULAR</div>
+                <div class="plan-name">AI Pro Business</div>
+                <div class="plan-price">$29 <span>/ one-time</span></div>
+                <ul class="features">
+                    <li>Unlimited Social Accounts</li>
+                    <li>Unlimited Scheduled Posts</li>
+                    <li>Advanced AI Auto-Replies & Lead Gen</li>
+                    <li>Daily Weather & Trend Automation</li>
+                    <li>Priority 24/7 Support</li>
+                </ul>
+                {% if current_user.subscription_tier == 'pro' %}
+                    <button class="btn btn-secondary" disabled>Current Plan</button>
+                    <div class="current-badge">✓ You are a Pro member!</div>
+                {% else %}
+                    <a href="/dashboard/checkout" class="btn btn-primary">Upgrade to Pro 🚀</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

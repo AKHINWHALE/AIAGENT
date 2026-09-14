@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Schedule Posts - AI Assistant Pro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div style="max-width: 1000px; margin: 0 auto; padding: 2rem;">
+        <a href="/dashboard/" style="color: var(--primary); text-decoration: none; font-weight: bold;">← Back to Dashboard</a>
+        
+        <div class="card" style="margin-top: 2rem;">
+            <div class="card-header">
+                <div>
+                    <h2 class="card-title">📅 Schedule Posts</h2>
+                    <p class="card-subtitle">Schedule up to 20 posts for automatic publishing</p>
+                </div>
+            </div>
+            
+            {% if scheduled_posts|length >= 20 %}
+                <div class="alert alert-warning">
+                    ⚠️ You've reached the maximum of 20 scheduled posts. Wait for some to be published or delete existing ones.
+                </div>
+            {% else %}
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label class="form-label">Post Content</label>
+                        <textarea name="content" class="form-textarea" placeholder="What do you want to post?" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Upload Media (Optional)</label>
+                        <input type="file" name="media" class="form-input" accept="image/*,video/*">
+                        <small style="color: var(--gray);">Supported: Images (JPG, PNG) and Videos (MP4)</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Schedule Date & Time</label>
+                        <input type="datetime-local" name="scheduled_at" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Publish to Platforms</label>
+                        <div class="platform-grid">
+                            {% for account in accounts %}
+                            <label class="platform-checkbox">
+                                <input type="checkbox" name="platforms" value="{{ account.platform }}">
+                                {{ account.platform | upper }} (@{{ account.username }})
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="platform-checkbox">
+                            <input type="checkbox" name="auto_approve">
+                            <div>
+                                <strong>Auto-Approve</strong>
+                                <p style="color: var(--gray); font-size: 0.9rem; margin-top: 0.25rem;">
+                                    Skip WhatsApp approval and post automatically
+                                </p>
+                            </div>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">📅 Schedule Post</button>
+                </form>
+            {% endif %}
+        </div>
+        
+        <div class="card">
+            <h3 style="margin-bottom: 1.5rem;">Your Scheduled Posts ({{ scheduled_posts|length }}/20)</h3>
+            
+            {% if scheduled_posts %}
+                {% for post in scheduled_posts %}
+                <div class="post-item">
+                    <div class="post-content">{{ post.content }}</div>
+                    <div class="post-meta">
+                        <span class="badge badge-scheduled">Scheduled</span>
+                        <span>📅 {{ post.scheduled_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                        <span>📱 {{ post.platforms }}</span>
+                        {% if post.media_url %}
+                            <span>📎 Has Media</span>
+                        {% endif %}
+                        {% if post.auto_approve %}
+                            <span class="badge badge-active">Auto-Approve</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <div class="empty-state-icon">📅</div>
+                    <div class="empty-state-title">No Scheduled Posts</div>
+                    <div class="empty-state-text">Schedule your first post above!</div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

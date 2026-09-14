@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verified - AI Assistant Pro</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .success-container {
+            background: white;
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+        .checkmark {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #27ae60;
+            margin-bottom: 15px;
+            font-size: 32px;
+        }
+        p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .user-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .user-info strong {
+            color: #333;
+        }
+        a.btn {
+            display: inline-block;
+            padding: 14px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+        a.btn:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <div class="checkmark">✅</div>
+        <h2>Email Verified Successfully!</h2>
+        <p>
+            Congratulations, <strong>{{ user.full_name }}</strong>!<br>
+            Your email <strong>{{ user.email }}</strong> has been verified.
+        </p>
+        
+        <div class="user-info">
+            <p><strong>Welcome to AI Assistant Pro!</strong></p>
+            <p>Your account is now fully active. You can:</p>
+            <ul style="text-align: left; margin-top: 10px; line-height: 1.8;">
+                <li>📱 Connect your social media accounts</li>
+                <li>📦 Add your products and pricing</li>
+                <li>⚡ Set up automated triggers</li>
+                <li>🤖 Let AI handle customer inquiries 24/7</li>
+            </ul>
+        </div>
+        
+        <a href="/login" class="btn">Login to Your Dashboard</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,38 @@
+   venv/
+   __pycache__/
+   *.db
+   .env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environment (CRITICAL: Do not upload this!)
+venv/
+env/
+ENV/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+instance/
+
+# Uploads and Media
+uploads/
+media/
+
+# Environment Variables (CRITICAL: Keep your secrets safe!)
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

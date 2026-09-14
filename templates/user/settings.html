@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Settings - AI Assistant Pro</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f5f7fa; padding: 20px; color: #333; }
+        .container { max-width: 900px; margin: 0 auto; }
+        .back { color: #667eea; text-decoration: none; font-weight: bold; display: inline-block; margin-bottom: 20px; }
+        .card { background: white; padding: 30px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 20px; }
+        h2 { margin-bottom: 10px; color: #2d3748; }
+        h3 { margin: 25px 0 15px; color: #2d3748; }
+        .sub { color: #718096; margin-bottom: 20px; }
+        .fg { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; }
+        input, select { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 15px; }
+        input:focus, select:focus { outline: none; border-color: #667eea; }
+        .btn { padding: 14px 30px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; }
+        .toggle { display: flex; align-items: center; gap: 15px; padding: 15px; background: #f7fafc; border-radius: 8px; margin-bottom: 15px; cursor: pointer; }
+        .toggle input { width: auto; }
+        .toggle-text strong { display: block; margin-bottom: 3px; }
+        .toggle-text small { color: #718096; }
+        .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/dashboard/" class="back">← Back to Dashboard</a>
+        <div class="card">
+            <h2>⚙️ Settings</h2>
+            <p class="sub">Configure your AI assistant preferences</p>
+            <form method="POST">
+                <h3>📱 Posting Preferences</h3>
+                <label class="toggle">
+                    <input type="checkbox" name="auto_post_enabled" {% if settings.auto_post_enabled %}checked{% endif %}>
+                    <div class="toggle-text">
+                        <strong>Enable Auto-Posting</strong>
+                        <small>AI will automatically post content at scheduled times</small>
+                    </div>
+                </label>
+                <label class="toggle">
+                    <input type="checkbox" name="require_whatsapp_approval" {% if settings.require_whatsapp_approval %}checked{% endif %}>
+                    <div class="toggle-text">
+                        <strong>Require WhatsApp Approval</strong>
+                        <small>Send drafts to WhatsApp before posting</small>
+                    </div>
+                </label>
+                <div class="fg">
+                    <label>Daily Post Time</label>
+                    <input type="time" name="daily_post_time" value="{{ settings.daily_post_time or '07:00' }}">
+                </div>
+                <h3>🔥 Trending Topics</h3>
+                <label class="toggle">
+                    <input type="checkbox" name="auto_detect_trends" {% if settings.auto_detect_trends %}checked{% endif %}>
+                    <div class="toggle-text">
+                        <strong>Auto-Detect Trends</strong>
+                        <small>AI finds trending topics every morning</small>
+                    </div>
+                </label>
+                <h3>🏢 Business Hours</h3>
+                <div class="grid2">
+                    <div class="fg">
+                        <label>Start Time</label>
+                        <input type="time" name="business_hours_start" value="{{ settings.business_hours_start or '09:00' }}">
+                    </div>
+                    <div class="fg">
+                        <label>End Time</label>
+                        <input type="time" name="business_hours_end" value="{{ settings.business_hours_end or '17:00' }}">
+                    </div>
+                </div>
+                <div class="fg">
+                    <label>Timezone</label>
+                    <select name="timezone">
+                        <option value="UTC" {% if settings.timezone == 'UTC' %}selected{% endif %}>UTC</option>
+                        <option value="Europe/London" {% if settings.timezone == 'Europe/London' %}selected{% endif %}>London</option>
+                        <option value="Africa/Lagos" {% if settings.timezone == 'Africa/Lagos' %}selected{% endif %}>Lagos, Nigeria</option>
+                        <option value="America/New_York" {% if settings.timezone == 'America/New_York' %}selected{% endif %}>Eastern Time (US)</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">💾 Save Settings</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

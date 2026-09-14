@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Connect Social Media - AI Assistant Pro</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f5f7fa; padding: 20px; color: #333; }
+        .container { max-width: 900px; margin: 0 auto; }
+        .back { color: #667eea; text-decoration: none; font-weight: bold; margin-bottom: 20px; display: inline-block; }
+        .card { background: white; padding: 30px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 20px; }
+        h2 { margin-bottom: 10px; color: #2d3748; }
+        .sub { color: #718096; margin-bottom: 20px; }
+        .fg { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; }
+        input, select { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 15px; }
+        .btn { padding: 14px 30px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .connected { padding: 20px; background: #f7fafc; border-radius: 12px; margin-bottom: 15px; border-left: 4px solid #10b981; }
+        .badge { background: #d1fae5; color: #065f46; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/dashboard/" class="back">← Back to Dashboard</a>
+        <div class="card">
+            <h2>📱 Connect Your Social Media</h2>
+            <p class="sub">Link your accounts so the AI can post on your behalf</p>
+            <form method="POST">
+                <div class="fg">
+                    <label>Platform</label>
+                    <select name="platform" required>
+                        <option value="">Select Platform</option>
+                        <option value="twitter">Twitter / X</option>
+                        <option value="facebook">Facebook</option>
+                        <option value="instagram">Instagram</option>
+                        <option value="tiktok">TikTok</option>
+                        <option value="whatsapp">WhatsApp Business</option>
+                        <option value="linkedin">LinkedIn</option>
+                    </select>
+                </div>
+                <div class="fg">
+                    <label>Username / Handle</label>
+                    <input type="text" name="username" placeholder="@yourusername" required>
+                </div>
+                <div class="fg">
+                    <label>Access Token (Optional)</label>
+                    <input type="text" name="access_token" placeholder="Get from platform settings">
+                </div>
+                <button type="submit" class="btn">🔗 Connect Account</button>
+            </form>
+        </div>
+        <div class="card">
+            <h3>Currently Connected</h3>
+            {% if accounts %}
+                {% for account in accounts %}
+                <div class="connected">
+                    <strong>{{ account.platform | upper }}</strong> - @{{ account.username }}
+                    <span class="badge">✓ Connected</span>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p style="text-align: center; color: #a0aec0; padding: 40px;">No accounts connected yet</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Products</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f5f7fa; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .back-link { color: #667eea; text-decoration: none; display: inline-block; margin-bottom: 20px; }
+        .card {
+            background: white; padding: 30px; border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 20px;
+        }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: 500; }
+        input, textarea {
+            width: 100%; padding: 12px; border: 2px solid #e0e0e0;
+            border-radius: 8px; font-size: 15px;
+        }
+        button {
+            padding: 12px 30px; background: #667eea; color: white;
+            border: none; border-radius: 8px; cursor: pointer; font-weight: bold;
+        }
+        .product-item {
+            padding: 15px; background: #f8f9fa; border-radius: 8px;
+            margin-bottom: 10px; border-left: 4px solid #667eea;
+        }
+        .product-name { font-weight: bold; font-size: 16px; }
+        .product-price { color: #27ae60; font-weight: bold; }
+        .product-stock { color: #666; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/dashboard/" class="back-link">← Back to Dashboard</a>
+        
+        <div class="card">
+            <h2>Add New Product</h2>
+            <p style="color: #666; margin-bottom: 20px;">These products will be shown to customers by the AI.</p>
+            
+            <form method="POST">
+                <div class="form-group">
+                    <label>Product Name</label>
+                    <input type="text" name="name" placeholder="iPhone 15 Pro" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="description" rows="3" placeholder="Latest iPhone with A17 Pro chip..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Price ($)</label>
+                    <input type="number" name="price" step="0.01" placeholder="999.99" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Stock Quantity</label>
+                    <input type="number" name="stock" placeholder="50" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Category</label>
+                    <input type="text" name="category" placeholder="Electronics">
+                </div>
+                
+                <button type="submit">Add Product</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h3>Your Products ({{ products|length }})</h3>
+            {% if products %}
+                {% for product in products %}
+                <div class="product-item">
+                    <div class="product-name">{{ product.name }}</div>
+                    <div class="product-price">${{ "%.2f"|format(product.price) }}</div>
+                    <div class="product-stock">Stock: {{ product.stock }} | Category: {{ product.category }}</div>
+                    {% if product.description %}
+                    <div style="color: #666; font-size: 14px; margin-top: 5px;">{{ product.description }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            {% else %}
+                <p style="color: #999;">No products added yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

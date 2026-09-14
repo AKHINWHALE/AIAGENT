@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Products</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: white; padding: 30px; border-radius: 10px; margin-bottom: 20px; }
+        input, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        button { padding: 12px 30px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .product { border-left: 4px solid #667eea; padding: 15px; margin: 10px 0; background: #f8f9fa; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/dashboard" style="color: #667eea;">← Back to Dashboard</a>
+        
+        <div class="card">
+            <h2>📦 Add New Product</h2>
+            <p>These products will be shown to customers by the AI.</p>
+            <form method="POST">
+                <input type="text" name="name" placeholder="Product Name" required>
+                <textarea name="description" placeholder="Description" rows="3"></textarea>
+                <input type="number" name="price" placeholder="Price ($)" step="0.01" required>
+                <input type="number" name="stock" placeholder="Stock Quantity" required>
+                <input type="text" name="category" placeholder="Category (e.g., Electronics)">
+                <button type="submit">Add Product</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h3>Your Products ({{ products|length }})</h3>
+            {% for product in products %}
+                <div class="product">
+                    <strong>{{ product.name }}</strong> - ${{ product.price }}
+                    <br>Stock: {{ product.stock }} | Category: {{ product.category }}
+                    <br><small>{{ product.description }}</small>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

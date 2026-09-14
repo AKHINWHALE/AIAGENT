@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Post</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; margin: 0; padding: 20px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: white; padding: 30px; border-radius: 10px; }
+        textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; min-height: 150px; }
+        button { padding: 12px 30px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        .platform-checkbox { display: inline-block; margin: 10px 20px 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/dashboard" style="color: #667eea;">← Back to Dashboard</a>
+        
+        <div class="card">
+            <h2>✍️ Create a Post</h2>
+            <p>Write once, publish to all your connected platforms.</p>
+            
+            <form method="POST">
+                <textarea name="content" placeholder="What do you want to say?" required></textarea>
+                
+                <h3>Publish to:</h3>
+                {% for account in accounts %}
+                    <label class="platform-checkbox">
+                        <input type="checkbox" name="platforms" value="{{ account.platform }}">
+                        {{ account.platform | upper }} (@{{ account.username }})
+                    </label>
+                {% endfor %}
+                
+                {% if not accounts %}
+                    <p style="color: orange;">⚠️ No social accounts connected. <a href="/connect-social">Connect now</a></p>
+                {% endif %}
+                
+                <br><br>
+                <button type="submit">🚀 Create & Schedule Post</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

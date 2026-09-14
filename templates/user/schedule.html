@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Schedule Posts - AI Assistant Pro</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f5f7fa; padding: 20px; color: #333; }
+        .container { max-width: 900px; margin: 0 auto; }
+        .back { color: #667eea; text-decoration: none; font-weight: bold; display: inline-block; margin-bottom: 20px; }
+        .card { background: white; padding: 30px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 20px; }
+        h2 { margin-bottom: 10px; color: #2d3748; }
+        .sub { color: #718096; margin-bottom: 20px; }
+        .fg { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; }
+        input, select, textarea { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 15px; font-family: inherit; }
+        input:focus, textarea:focus { outline: none; border-color: #667eea; }
+        textarea { min-height: 120px; resize: vertical; }
+        .btn { padding: 14px 30px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 16px; }
+        .btn:hover { transform: translateY(-2px); }
+        .post-item { padding: 20px; background: #f7fafc; border-radius: 12px; margin-bottom: 15px; border-left: 4px solid #667eea; }
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; background: #ebf4ff; color: #3182ce; }
+        .empty { text-align: center; padding: 40px; color: #a0aec0; }
+        .platforms { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+        .pc { display: flex; align-items: center; gap: 8px; padding: 10px 15px; background: #f7fafc; border-radius: 8px; cursor: pointer; border: 2px solid transparent; }
+        .pc:hover { border-color: #667eea; }
+        .pc input { width: auto; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/dashboard/" class="back">← Back to Dashboard</a>
+        <div class="card">
+            <h2>📅 Schedule Posts</h2>
+            <p class="sub">Schedule up to 20 posts for automatic publishing</p>
+            {% if scheduled_posts|length >= 20 %}
+                <p style="color: #e53e3e; font-weight: bold;">⚠️ Maximum 20 scheduled posts reached!</p>
+            {% else %}
+            <form method="POST" enctype="multipart/form-data">
+                <div class="fg">
+                    <label>Post Content</label>
+                    <textarea name="content" placeholder="What do you want to post?" required></textarea>
+                </div>
+                <div class="fg">
+                    <label>Upload Media (Optional)</label>
+                    <input type="file" name="media" accept="image/*,video/*">
+                </div>
+                <div class="fg">
+                    <label>Schedule Date and Time</label>
+                    <input type="datetime-local" name="scheduled_at" required>
+                </div>
+                <div class="fg">
+                    <label>Publish to Platforms</label>
+                    <div class="platforms">
+                        {% for account in accounts %}
+                        <label class="pc">
+                            <input type="checkbox" name="platforms" value="{{ account.platform }}">
+                            {{ account.platform | upper }} (@{{ account.username }})
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="fg">
+                    <label class="pc">
+                        <input type="checkbox" name="auto_approve">
+                        <div><strong>Auto-Approve</strong><br><small style="color: #718096;">Skip WhatsApp approval</small></div>
+                    </label>
+                </div>
+                <button type="submit" class="btn">📅 Schedule Post</button>
+            </form>
+            {% endif %}
+        </div>
+        <div class="card">
+            <h3>Your Scheduled Posts ({{ scheduled_posts|length }}/20)</h3>
+            {% if scheduled_posts %}
+                {% for post in scheduled_posts %}
+                <div class="post-item">
+                    <p>{{ post.content }}</p>
+                    <p style="margin-top: 10px; color: #718096; font-size: 14px;">
+                        <span class="badge">Scheduled</span>
+                        📅 {{ post.scheduled_at.strftime('%Y-%m-%d %H:%M') }}
+                        | 📱 {{ post.platforms }}
+                    </p>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty"><p style="font-size: 48px;">📅</p><p>No scheduled posts yet</p></div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leads - AI Assistant Pro</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f5f7fa; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .back { color: #667eea; text-decoration: none; font-weight: bold; margin-bottom: 20px; display: inline-block; }
+        .card { background: white; padding: 30px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: 20px; }
+        h2 { margin-bottom: 10px; }
+        .sub { color: #718096; margin-bottom: 20px; }
+        .fg { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: 600; }
+        input, select, textarea { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; }
+        textarea { min-height: 80px; }
+        .btn { padding: 14px 30px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .lead-item { padding: 20px; background: #f7fafc; border-radius: 12px; margin-bottom: 15px; border-left: 4px solid #f59e0b; }
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; background: #fef3c7; color: #92400e; }
+        .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/dashboard/" class="back">← Back to Dashboard</a>
+        <div class="card">
+            <h2>🎯 Add New Lead</h2>
+            <p class="sub">Collect customer leads from social media</p>
+            <form method="POST">
+                <div class="fg">
+                    <label>Name</label>
+                    <input type="text" name="name" required>
+                </div>
+                <div class="grid2">
+                    <div class="fg">
+                        <label>Email</label>
+                        <input type="email" name="email">
+                    </div>
+                    <div class="fg">
+                        <label>Phone</label>
+                        <input type="tel" name="phone">
+                    </div>
+                </div>
+                <div class="grid2">
+                    <div class="fg">
+                        <label>Source</label>
+                        <select name="source">
+                            <option value="facebook">Facebook</option>
+                            <option value="instagram">Instagram</option>
+                            <option value="twitter">Twitter</option>
+                            <option value="whatsapp">WhatsApp</option>
+                            <option value="tiktok">TikTok</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="fg">
+                        <label>Best Time to Contact</label>
+                        <input type="text" name="best_time_to_contact" placeholder="e.g., Weekdays 2-5pm">
+                    </div>
+                </div>
+                <div class="fg">
+                    <label>Interest / What they're looking for</label>
+                    <textarea name="interest"></textarea>
+                </div>
+                <div class="fg">
+                    <label>Follow-up Date</label>
+                    <input type="datetime-local" name="follow_up_date">
+                </div>
+                <div class="fg">
+                    <label>Notes</label>
+                    <textarea name="notes"></textarea>
+                </div>
+                <button type="submit" class="btn">Add Lead</button>
+            </form>
+        </div>
+        <div class="card">
+            <h3>Your Leads ({{ leads|length }})</h3>
+            {% if leads %}
+                {% for lead in leads %}
+                <div class="lead-item">
+                    <strong>{{ lead.name }}</strong>
+                    <span class="badge">{{ lead.status | upper }}</span>
+                    <p style="margin-top: 10px; color: #718096; font-size: 14px;">
+                        📧 {{ lead.email or 'N/A' }} |
+                        📞 {{ lead.phone or 'N/A' }} |
+                        📱 {{ lead.source | upper }}
+                    </p>
+                    {% if lead.interest %}
+                    <p style="margin-top: 5px; color: #4a5568;">💡 {{ lead.interest }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            {% else %}
+                <p style="text-align: center; color: #a0aec0; padding: 40px;">No leads yet</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

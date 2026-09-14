@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Settings - AI Assistant Pro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div style="max-width: 900px; margin: 0 auto; padding: 2rem;">
+        <a href="/dashboard/" style="color: var(--primary); text-decoration: none; font-weight: bold;">← Back to Dashboard</a>
+        
+        <div class="card" style="margin-top: 2rem;">
+            <div class="card-header">
+                <div>
+                    <h2 class="card-title">⚙️ Settings</h2>
+                    <p class="card-subtitle">Configure your AI assistant preferences</p>
+                </div>
+            </div>
+            
+            <form method="POST">
+                <!-- Posting Preferences -->
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="margin-bottom: 1rem; color: var(--dark);">📱 Posting Preferences</h3>
+                    
+                    <div class="form-group">
+                        <label class="platform-checkbox">
+                            <input type="checkbox" name="auto_post_enabled" {% if settings.auto_post_enabled %}checked{% endif %}>
+                            <div>
+                                <strong>Enable Auto-Posting</strong>
+                                <p style="color: var(--gray); font-size: 0.9rem; margin-top: 0.25rem;">
+                                    AI will automatically post content at scheduled times
+                                </p>
+                            </div>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="platform-checkbox">
+                            <input type="checkbox" name="require_whatsapp_approval" {% if settings.require_whatsapp_approval %}checked{% endif %}>
+                            <div>
+                                <strong>Require WhatsApp Approval</strong>
+                                <p style="color: var(--gray); font-size: 0.9rem; margin-top: 0.25rem;">
+                                    Send drafts to WhatsApp for approval before posting
+                                </p>
+                            </div>
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Daily Post Time</label>
+                        <input type="time" name="daily_post_time" class="form-input" value="{{ settings.daily_post_time or '07:00' }}">
+                        <small style="color: var(--gray);">Time when AI will post trending content (24-hour format)</small>
+                    </div>
+                </div>
+                
+                <!-- Trending Topics -->
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="margin-bottom: 1rem; color: var(--dark);">🔥 Trending Topics</h3>
+                    
+                    <div class="form-group">
+                        <label class="platform-checkbox">
+                            <input type="checkbox" name="auto_detect_trends" {% if settings.auto_detect_trends %}checked{% endif %}>
+                            <div>
+                                <strong>Auto-Detect Trends</strong>
+                                <p style="color: var(--gray); font-size: 0.9rem; margin-top: 0.25rem;">
+                                    AI will automatically find trending topics every morning
+                                </p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Business Hours -->
+                <div style="margin-bottom: 2rem;">
+                    <h3 style="margin-bottom: 1rem; color: var(--dark);">🏢 Business Hours</h3>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <div class="form-group">
+                            <label class="form-label">Start Time</label>
+                            <input type="time" name="business_hours_start" class="form-input" value="{{ settings.business_hours_start or '09:00' }}">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">End Time</label>
+                            <input type="time" name="business_hours_end" class="form-input" value="{{ settings.business_hours_end or '17:00' }}">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Timezone</label>
+                        <select name="timezone" class="form-select">
+                            <option value="UTC" {% if settings.timezone == 'UTC' %}selected{% endif %}>UTC</option>
+                            <option value="America/New_York" {% if settings.timezone == 'America/New_York' %}selected{% endif %}>Eastern Time (US)</option>
+                            <option value="America/Los_Angeles" {% if settings.timezone == 'America/Los_Angeles' %}selected{% endif %}>Pacific Time (US)</option>
+                            <option value="Europe/London" {% if settings.timezone == 'Europe/London' %}selected{% endif %}>London</option>
+                            <option value="Africa/Lagos" {% if settings.timezone == 'Africa/Lagos' %}selected{% endif %}>Lagos, Nigeria</option>
+                            <option value="Asia/Tokyo" {% if settings.timezone == 'Asia/Tokyo' %}selected{% endif %}>Tokyo</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">💾 Save Settings</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

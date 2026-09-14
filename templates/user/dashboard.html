@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AI Assistant Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            min-height: 100vh;
+            color: #1a202c;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #718096;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 6px;
+            height: 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 3px;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .action-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            text-decoration: none;
+            color: #2d3748;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .action-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.25);
+            border-color: #667eea;
+        }
+
+        .action-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .action-card:hover .action-icon {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        .action-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: #2d3748;
+        }
+
+        .action-desc {
+            color: #718096;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <h1>Welcome, {{ current_user.full_name }}!</h1>
+                <p>{{ current_user.business_name or 'Your Business Dashboard' }}</p>
+            </div>
+            <div>
+                <a href="/logout" class="logout-btn">Logout</a>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">📱</div>
+                <div class="stat-number">{{ stats.social_accounts }}</div>
+                <div class="stat-label">Connected Accounts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📦</div>
+                <div class="stat-number">{{ stats.products }}</div>
+                <div class="stat-label">Products</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⚡</div>
+                <div class="stat-number">{{ stats.triggers }}</div>
+                <div class="stat-label">Active Triggers</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✍️</div>
+                <div class="stat-number">{{ stats.pending_posts }}</div>
+                <div class="stat-label">Pending Posts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">💬</div>
+                <div class="stat-number">{{ stats.unresolved_messages }}</div>
+                <div class="stat-label">Unread Messages</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📅</div>
+                <div class="stat-number">{{ stats.scheduled_posts }}</div>
+                <div class="stat-label">Scheduled Posts</div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Quick Actions</h2>
+        <div class="actions-grid">
+            <a href="/dashboard/connect-social" class="action-card">
+                <div class="action-icon">📱</div>
+                <div class="action-title">Connect Social Media</div>
+                <div class="action-desc">Link your Twitter, Facebook, Instagram, and more</div>
+            </a>
+            <a href="/dashboard/products" class="action-card">
+                <div class="action-icon">📦</div>
+                <div class="action-title">Manage Products</div>
+                <div class="action-desc">Add products, set pricing, and track inventory</div>
+            </a>
+            <a href="/dashboard/triggers" class="action-card">
+                <div class="action-icon">⚡</div>
+                <div class="action-title">Setup Triggers</div>
+                <div class="action-desc">Automate responses and actions with smart triggers</div>
+            </a>
+            <a href="/dashboard/posts" class="action-card">
+                <div class="action-icon">✍️</div>
+                <div class="action-title">Create Post</div>
+                <div class="action-desc">Write and publish content across all platforms</div>
+            </a>
+            <a href="/dashboard/messages" class="action-card">
+                <div class="action-icon">💬</div>
+                <div class="action-title">View Messages</div>
+                <div class="action-desc">See customer inquiries and AI responses</div>
+            </a>
+            <a href="/dashboard/schedule" class="action-card">
+                <div class="action-icon">📅</div>
+                <div class="action-title">Schedule Posts</div>
+                <div class="action-desc">Schedule up to 20 posts with dates and times</div>
+            </a>
+            <a href="/dashboard/settings" class="action-card">
+                <div class="action-icon">⚙️</div>
+                <div class="action-title">Settings</div>
+                <div class="action-desc">Configure auto-posting and approval preferences</div>
+            </a>
+            <a href="/dashboard/billing" class="action-card">
+    <div class="action-icon">💳</div>
+    <div class="action-title">Billing & Pro</div>
+    <div class="action-desc">Upgrade to Pro for unlimited AI power</div>
+</a>
+                <a href="/dashboard/orders" class="action-card">
+    <div class="action-icon">📦</div>
+    <div class="action-title">Manage Orders</div>
+    <div class="action-desc">Take customer orders with delivery dates</div>
+</a>
+<a href="/dashboard/meetings" class="action-card">
+    <div class="action-icon">📅</div>
+    <div class="action-title">Schedule Meetings</div>
+    <div class="action-desc">Schedule business meetings with clients</div>
+</a>
+<a href="/dashboard/flights" class="action-card">
+    <div class="action-icon">✈️</div>
+    <div class="action-title">Flight Bookings</div>
+    <div class="action-desc">Manage customer flight bookings</div>
+</a>
+<a href="/dashboard/leads" class="action-card">
+    <div class="action-icon">🎯</div>
+    <div class="action-title">Collect Leads</div>
+    <div class="action-desc">Capture customer leads from social media</div>
+</a>
+        </div>
+    </div>
+</body>
+</html>
