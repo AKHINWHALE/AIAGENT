@@ -97,6 +97,44 @@ def internal_error(error):
     db.session.rollback()
     return render_template('error.html', error='Internal server error'), 500
 
+# DIAGNOSTIC PAGE - Shows exactly what's broken
+@app.route('/debug')
+def debug_page():
+    import traceback
+    results = []
+    
+    # Test 1: Check database
+    try:
+        with app.app_context():
+            from models import User
+            user_count = User.query.count()
+            results.append(f"✅ Database OK - {user_count} users found")
+    except Exception as e:
+        results.append(f"❌ Database ERROR: {str(e)}")
+    
+    # Test 2: Check templates
+    try:
+        from flask import render_template
+        render_template('login.html')
+        results.append("✅ login.html template found")
+    except Exception as e:
+        results.append(f"❌ Template ERROR: {str(e)}")
+    
+    # Test 3: Check environment variables
+    env_vars = ['FLASK_SECRET_KEY', 'OPENAI_API_KEY', 'MAIL_USERNAME', 'DATABASE_URL']
+    for var in env_vars:
+        value = os.getenv(var)
+        if value:
+            results.append(f"✅ {var} is set")
+        else:
+            results.append(f"❌ {var} is MISSING")
+    
+    # Test 4: Check blueprints
+    blueprints = list(app.blueprints.keys())
+    results.append(f"✅ Loaded blueprints: {blueprints}")
+    
+    return "<pre>" + "\n".join(results) + "</pre>"
+
 # Run the app
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
