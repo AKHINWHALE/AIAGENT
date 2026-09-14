@@ -31,6 +31,12 @@ app.config['APP_URL'] = os.getenv('APP_URL', 'http://localhost:5000')
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'auth.login'
+
+# ADD THIS EXACT BLOCK RIGHT HERE:
+@login_manager.user_loader
+def load_user(user_id):
+    from models import User
+    return User.query.get(int(user_id))
 mail = Mail(app)
 
 # Import models and blueprints
