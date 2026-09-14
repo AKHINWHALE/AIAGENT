@@ -52,6 +52,11 @@ with app.app_context():
 from scheduler import start_scheduler
 start_scheduler(app)
 
+@app.route('/')
+def home():
+    """Redirect visitors from the homepage to the login page"""
+    return redirect('/login')
+
 # 9. Run the app (This runs when you type 'python app.py' locally)
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
